@@ -1,15 +1,12 @@
 package com.meui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.provider.*;
-import android.util.AttributeSet;
-import android.widget.TextView;
+import android.util.*;
+import android.widget.*;
+import java.util.*;
 
 import java.util.Calendar;
-import android.content.*;
 
 /**
  * Original Created by Hong.
@@ -26,16 +23,16 @@ public class LunarView extends TextView
 	private final String can[]= {"庚","辛","壬","癸","甲","乙","丙","丁","戊","己"};
 	private final String chi[]={"申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"};
 	
-    private static final int TIME_ZONE =8;//原来是7
+    private static final int TIME_ZONE = 8;//原来是7
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver(){
+		@Override
         public void onReceive(Context object, Intent intent) {
-            String action = intent.getAction();
+            final String action = intent.getAction();
             if (Intent.ACTION_TIME_TICK.equals(action)
                     || Intent.ACTION_TIME_CHANGED.equals(action)
                     || Intent.ACTION_TIMEZONE_CHANGED.equals(action)
                     || Intent.ACTION_LOCALE_CHANGED.equals(action)) {
                 updateAmLich();
-				action=null;
             }
         }
     };
@@ -140,7 +137,7 @@ public class LunarView extends TextView
         } while (arc != last && i < 14);
         return i-1;
     }
-    private int  converAmLich(int day,int month,int year) {
+    private int converAmLich(int day,int month,int year) {
         int y, jd;
 		final int m;
         y = -(14 - month) / 12;
@@ -205,7 +202,7 @@ public class LunarView extends TextView
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-		final ContentResolver cp=getContext().getContentResolver(); 
+		final ContentResolver cp=mContext.getContentResolver(); 
 		//Can't use getApplicationContext! Cause NullPointerException and BOOTLOOP!
 		if(Settings.System.getInt(cp,"ls_lunar",0)==1)
 		{
@@ -215,17 +212,17 @@ public class LunarView extends TextView
 		}
 		else
 			this.setVisibility(INVISIBLE);
-        IntentFilter filter = new IntentFilter();
+        final IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_CHANGED);
         filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
         filter.addAction(Intent.ACTION_LOCALE_CHANGED);
-        getContext().registerReceiver(mIntentReceiver, filter, null, null);
+        mContext.registerReceiver(mIntentReceiver, filter, null, null);
         updateAmLich();
 		
     }
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getContext().unregisterReceiver(mIntentReceiver);
+        mContext.unregisterReceiver(mIntentReceiver);
     }
 }

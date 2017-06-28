@@ -5,15 +5,19 @@
     android:gravity="center"
 	android:orientation="vertical">
 
-    <com.meui.systemui.statusbar.Clock
+    <!--com.meui.systemui.statusbar.Clock
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" /-->
 	
 	<com.meui.SSButton
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="MEUI"/>
 	<com.meui.LunarView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+	<com.meui.SolarTerms24
+		android:background="#FF009688"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"/>
 </LinearLayout>
